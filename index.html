@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+		<title></title>
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Play:wght@700&display=swap" rel="stylesheet">
+		<style>
+			* {
+			  margin: 0;
+			  padding: 0;
+			  box-sizing: border-box !important;
+			}
+			
+			html, body {
+			  height: 100%;
+			}
+			
+			body {
+			  display: table;
+			  width: 100%;
+			  height: 100%;
+			  background-color: #171717;
+			  color: #000;
+			  line-height: 1.6;
+			  position: relative;
+			  font-family: sans-serif;
+			  overflow: hidden;
+			}
+			
+			.lines {
+			  position: absolute;
+			  top: 0;
+			  left: 0;
+			  right: 0;
+			  height: 100%;
+			  margin: auto;
+			  width: 90vw;
+			}
+			
+			.line {
+			  position: absolute;
+			  width: 1px;
+			  height: 100%;
+			  top: 0;
+			  left: 50%;
+			  background: rgba(255, 255, 255, 0.1);
+			  overflow: hidden;
+			}
+			.line::after {
+			  content: "";
+			  display: block;
+			  position: absolute;
+			  height: 15vh;
+			  width: 100%;
+			  top: -50%;
+			  left: 0;
+			  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #ffffff 75%, #ffffff 100%);
+			  -webkit-animation: drop 7s 0s infinite;
+					  animation: drop 7s 0s infinite;
+			  -webkit-animation-fill-mode: forwards;
+					  animation-fill-mode: forwards;
+			  -webkit-animation-timing-function: cubic-bezier(0.4, 0.26, 0, 0.97);
+					  animation-timing-function: cubic-bezier(0.4, 0.26, 0, 0.97);
+			}
+			.line:nth-child(1) {
+			  margin-left: -25%;
+			}
+			.line:nth-child(1)::after {
+			  -webkit-animation-delay: 2s;
+					  animation-delay: 2s;
+			}
+			.line:nth-child(3) {
+			  margin-left: 25%;
+			}
+			.line:nth-child(3)::after {
+			  -webkit-animation-delay: 2.5s;
+					  animation-delay: 2.5s;
+			}
+			
+			@-webkit-keyframes drop {
+			  0% {
+				top: -50%;
+			  }
+			  100% {
+				top: 110%;
+			  }
+			}
+			
+			@keyframes drop {
+			  0% {
+				top: -50%;
+			  }
+			  100% {
+				top: 110%;
+			  }
+			}
+			
+			header {
+				position: absolute;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				top: 0;
+				left: 0;
+			    flex-direction: column;
+				width: 100%;
+				height: 100vh;
+				text-align: center;
+				vertical-align: middle;
+				color: #fff;
+				text-transform: uppercase;
+				font-weight: bolder;
+				font-family: 'Play', sans-serif;
+				font-size: 4em;
+			}
+			
+			header > h1 {
+				vertical-align: bottom;
+				line-height: 0.8em;
+			}
+			
+			header > h2 {
+				vertical-align: top;
+				font-size: 1.5em;
+				line-height: 1.3em;
+			}
+			
+			progress {
+				width: 765px;
+			}
+		
+		</style>
+	</head>
+	<body>
+		<div class="lines">
+		  <div class="line"></div>
+		  <div class="line"></div>
+		  <div class="line"></div>
+		</div>
+		<header>
+			<h1>00:00:00:00</h1>
+			<h2>until freedom</h2>
+			<progress max="100"></progress>
+		</header>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+		<script>
+			const updateTime = () => {
+				const now = moment()
+				const start = moment("2021-12-03T09:00:00")
+				const end = moment("2024-12-03T18:00:00")
+				
+				const days = end.diff(now, 'days')
+				const hours = align(end.diff(now, 'hours') - (end.diff(now, 'days') * 24))
+				const minutes = align(end.diff(now, 'minutes') - (end.diff(now, 'hours') * 60))
+				const seconds = align(end.diff(now, 'seconds') - (end.diff(now, 'minutes') * 60))
+				
+				document.querySelector("h1").innerHTML = `${days}:${hours}:${minutes}:${seconds}`
+				document.querySelector("title").innerHTML = `${days}:${hours}:${minutes}:${seconds} before freedom`
+				document.querySelector("progress").value = (now.diff(start)) / (end.diff(start)) * 100
+				
+				setTimeout(updateTime, 1000)
+			}
+			
+			const align = (string) => {
+				if(string < 10) {
+					string = '0' + string
+				}
+				
+				return string
+			}
+			
+			updateTime()
+		</script>
+	</body>
+</html>
